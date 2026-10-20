@@ -52,6 +52,7 @@ class MainActivity : ComponentActivity() {
 fun ProgPrincipal9() {
     val urlBase = "https://json-placeholder.mock.beeceptor.com/"
     val retrofit = Retrofit.Builder()
+    val servicio = retrofit.create(PostApiService::class.java)
         .baseUrl(urlBase)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
