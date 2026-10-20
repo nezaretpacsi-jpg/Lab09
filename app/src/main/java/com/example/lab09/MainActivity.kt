@@ -57,4 +57,92 @@ fun ProgPrincipal9() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     val navController = rememberNavController()
+    Scaffold(
+        topBar = { BarraSuperior() },
+        bottomBar = { BarraInferior(navController) },
+        content = { paddingValues -> Contenido(paddingValues, navController, servicio) }
+    )
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BarraSuperior() {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = "JSONPlaceHolder Access",
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary
+        )
+    )
+}
+
+@Composable
+fun BarraInferior(navController: NavHostController) {
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val rutaActual = backStackEntry?.destination?.route
+
+    NavigationBar(
+        containerColor = Color.LightGray
+    ) {
+        NavigationBarItem(
+            icon = { Icon(Icons.Outlined.Home, contentDescription = "Inicio") },
+            label = { Text("Inicio") },
+            selected = rutaActual == "inicio",
+            onClick = { navController.navigate("inicio") }
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Outlined.Favorite, contentDescription = "Posts") },
+            label = { Text("Posts") },
+            selected = rutaActual == "posts",
+            onClick = { navController.navigate("posts") }
+        )
+    }
+}
+
+@Composable
+fun Contenido(
+    pv: PaddingValues,
+    navController: NavHostController,
+    servicio: PostApiService
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(pv)
+    ) {
+        NavHost(
+            navController = navController,
+            startDestination = "inicio"
+        ) {
+            composable("inicio") { ScreenInicio() }
+            composable("posts") { ScreenPosts(navController, servicio) }
+            composable(
+                "postsVer/{id}",
+                arguments = listOf(navArgument("id") { type = NavType.IntType })
+            ) {
+                ScreenPost(navController, servicio, it.arguments!!.getInt("id"))
+            }
+        }
+    }
+}
+
+@Composable
+fun ProgPrincipal9() {
+    val urlBase = "https://json-placeholder.mock.beeceptor.com/"
+    val retrofit = Retrofit.Builder()
+        .baseUrl(urlBase)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    val servicio = retrofit.create(PostApiService::class.java)
+    val navController = rememberNavController()
+
+    Scaffold(
+        topBar = { BarraSuperior() },
+        bottomBar = { BarraInferior(navController) },
+        content = { paddingValues -> Contenido(paddingValues, navController, servicio) }
+    )
 }
