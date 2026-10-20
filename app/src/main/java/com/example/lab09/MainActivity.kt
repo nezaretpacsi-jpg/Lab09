@@ -52,11 +52,12 @@ class MainActivity : ComponentActivity() {
 fun ProgPrincipal9() {
     val urlBase = "https://json-placeholder.mock.beeceptor.com/"
     val retrofit = Retrofit.Builder()
-    val servicio = retrofit.create(PostApiService::class.java)
         .baseUrl(urlBase)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
+    val servicio = retrofit.create(PostApiService::class.java)
     val navController = rememberNavController()
+
     Scaffold(
         topBar = { BarraSuperior() },
         bottomBar = { BarraInferior(navController) },
@@ -131,18 +132,6 @@ fun Contenido(
 }
 
 @Composable
-fun ProgPrincipal9() {
-    val urlBase = "https://json-placeholder.mock.beeceptor.com/"
-    val retrofit = Retrofit.Builder()
-        .baseUrl(urlBase)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    val servicio = retrofit.create(PostApiService::class.java)
-    val navController = rememberNavController()
-
-    Scaffold(
-        topBar = { BarraSuperior() },
-        bottomBar = { BarraInferior(navController) },
-        content = { paddingValues -> Contenido(paddingValues, navController, servicio) }
-    )
+fun ScreenInicio() {
+    Text("INICIO")
 }

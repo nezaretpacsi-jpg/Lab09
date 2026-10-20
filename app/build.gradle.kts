@@ -51,6 +51,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.2.2")
     implementation("androidx.navigation:navigation-runtime-ktx:2.8.3")
     implementation("androidx.navigation:navigation-compose:2.8.3")
+    implementation("androidx.compose.material:material-icons-core")
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
